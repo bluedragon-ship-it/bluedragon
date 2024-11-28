@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Dragon Transport</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+            color: white;
+        }
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .navbar ul li {
+            margin: 0 10px;
+        }
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .navbar button {
+            background-color: #555;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .navbar button:hover {
+            background-color: #777;
+        }
+        .content {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+        }
+        .content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .form-container {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .form-container.active {
+            display: block;
+        }
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo"><a href="#">Blue Dragon</a></div>
+        <ul>
+            <li><a id="homeLink">Home</a></li>
+            <li><a id="aboutLink">About</a></li>
+        </ul>
+        <button id="signInBtn">Sign In</button>
+        <button id="signUpBtn">Sign Up</button>
+    </div>
+
+    <div class="content" id="mainContent">
+        <!-- Default content will go here -->
+    </div>
+
+    <div id="signUpForm" class="form-container">
+        <h2>Sign Up</h2>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" placeholder="Enter your first name" required>
+        <label for="lastName">Last Name (Optional):</label>
+        <input type="text" id="lastName" placeholder="Enter your last name">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" required>
+        <label for="gender">Gender:</label>
+        <select id="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+        <button onclick="completeSignUp()">Confirm</button>
+    </div>
+
+    <div id="signInForm" class="form-container">
+        <h2>Sign In</h2>
+        <label for="signInUsername">First Name:</label>
+        <input type="text" id="signInUsername" placeholder="Enter your first name" required>
+        <label for="signInPassword">Password:</label>
+        <input type="password" id="signInPassword" placeholder="Enter your password" required>
+        <button onclick="signIn()">Sign In</button>
+    </div>
+
+    <script>
+        const homeLink = document.getElementById('homeLink');
+        const aboutLink = document.getElementById('aboutLink');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const signInBtn = document.getElementById('signInBtn');
+        const mainContent = document.getElementById('mainContent');
+        const signUpForm = document.getElementById('signUpForm');
+        const signInForm = document.getElementById('signInForm');
+
+        let users = []; // Store user data locally
+
+        // Function to display Home content
+        function showHome() {
+            mainContent.innerHTML = `
+                <p style="font-size: 24px; font-weight: bold;">WHAT ARE OUR SERVICES?</p>
+                <p>Our services give you quick and fast transportation. You can order and set a date for moving things. 
+                We transport many types of items, and you can use our service if you are changing your house and need help with 
+                transporting things. We take all types of items except those that are illegal or not allowed in the United Arab Emirates.</p>
+                <br>
+                <br>
+                <p style="font-size: 24px; font-weight: bold;">Blue Dragon Transport
+                LLC is a reliable and efficient transportation company</p>
+                <p>dedicated to delivering goods quickly and on time. With a focus
+                on precision and customer satisfaction,
+                we specialize in transporting various
+                items to meet diverse needs. Our growing team of skilled staff ensures
+                seamless operations and quality service, making us a trusted choice for all your
+                transportation requirements.</p>
+            `;
+            hideForms();
+        }
+
+        // Function to display About content
+        function showAbout() {
+            mainContent.innerHTML = `
+                <p><b>WHO ARE WE AND WHAT DO WE DO?:</b> We are a team of members, we transport things 
+                to places you want. Whether it's important or not, we do it on Time!! Our company is now new to this year. 
+                It is established in 2024, and its name is <u>Blue Dragon</u>. We help people transport, and
+                for more information on this company and its uses, please send a mail to 
+                <a href="mailto:bluedragonllcuae@gmail.com">bluedragonllcuae@gmail.com</a>.</p>
+            `;
+            hideForms();
+        }
+
+        // Function to show Sign-Up form
+        function showSignUp() {
+            signUpForm.classList.add('active');
+            signInForm.classList.remove('active');
+            mainContent.innerHTML = '';
+        }
+
+        // Function to show Sign-In form
+        function showSignIn() {
+            signInForm.classList.add('active');
+            signUpForm.classList.remove('active');
+            mainContent.innerHTML = '';
+        }
+
+        // Hide all forms
+        function hideForms() {
+            signUpForm.classList.remove('active');
+            signInForm.classList.remove('active');
+        }
+
+        // Function to handle Sign-Up
+        function completeSignUp() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Save user data locally
+            users.push({ firstName, lastName, dob, gender, password });
+            alert('Sign-up successful! You can now sign in.');
+            showSignIn();
+        }
+
+        // Function to handle Sign-In
+        function signIn() {
+            const signInUsername = document.getElementById('signInUsername').value;
+            const signInPassword = document.getElementById('signInPassword').value;
+
+            const user = users.find(
+                (user) => user.firstName === signInUsername && user.password === signInPassword
+            );
+
+            if (user) {
+                alert(`Welcome back, ${user.firstName}!`);
+                showHome();
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        }
+
+        // Event listeners for navigation and buttons
+        homeLink.addEventListener('click', showHome);
+        aboutLink.addEventListener('click', showAbout);
+        signUpBtn.addEventListener('click', showSignUp);
+        signInBtn.addEventListener('click', showSignIn);
+
+        // Set default content to Home
+        showHome();
+    </script>
+</body>
+</html>
